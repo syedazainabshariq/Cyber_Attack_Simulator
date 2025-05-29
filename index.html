@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Cyber Attack Simulator</title>
+<style>
+  body {
+    background: black;
+    color: lime;
+    font-family: monospace;
+    overflow: hidden;
+    margin: 0; padding: 20px;
+  }
+  #terminal {
+    background: rgba(0,0,0,0.85);
+    padding: 20px;
+    height: 300px;
+    overflow-y: auto;
+    border-radius: 5px;
+  }
+  #inputSection {
+    margin-top: 20px;
+  }
+  input, select, button {
+    font-family: monospace;
+    padding: 10px;
+    margin-right: 10px;
+    background: #111;
+    color: lime;
+    border: 1px solid lime;
+    border-radius: 3px;
+  }
+  button:hover {
+    background: lime;
+    color: black;
+    cursor: pointer;
+  }
+</style>
+</head>
+<body>
+
+<h1>Cyber Attack Simulator</h1>
+
+<div id="terminal"></div>
+
+<div id="inputSection">
+  <input type="text" id="serverInput" placeholder="Enter server IP or URL" />
+  <select id="attackType">
+    <option value="ddos">DDoS Attack</option>
+    <option value="sql">SQL Injection</option>
+    <option value="phishing">Phishing</option>
+  </select>
+  <button id="attackBtn">Simulate Attack</button>
+</div>
+
+<script>
+const terminal = document.getElementById('terminal');
+const attackBtn = document.getElementById('attackBtn');
+
+function appendTerminal(text) {
+  terminal.innerHTML += text + '<br>';
+  terminal.scrollTop = terminal.scrollHeight;
+}
+
+function simulateAttack(type, target) {
+  appendTerminal(`> Starting ${type.toUpperCase()} on ${target}...`);
+  setTimeout(() => {
+    appendTerminal(`> Attack in progress...`);
+  }, 1000);
+  setTimeout(() => {
+    const success = Math.random() < 0.5; // 50% chance
+    if (success) {
+      appendTerminal(`> SUCCESS: ${target} compromised!`);
+      playAlertSound();
+    } else {
+      appendTerminal(`> FAILED: ${target} defended the attack.`);
+    }
+  }, 3000);
+}
+
+function playAlertSound() {
+  const audio = new Audio('https://actions.google.com/sounds/v1/alarms/beep_short.ogg');
+  audio.play();
+}
+
+attackBtn.addEventListener('click', () => {
+  const target = document.getElementById('serverInput').value.trim();
+  const type = document.getElementById('attackType').value;
+  if (!target) {
+    alert('Please enter a server IP or URL.');
+    return;
+  }
+  simulateAttack(type, target);
+});
+</script>
+
+</body>
+</html>
